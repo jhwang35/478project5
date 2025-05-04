@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MusicCentral</string>
+    <string name="play">Play</string>
+    <string name="Resume">Resume</string>
+    <string name="Pause">Pause</string>
+    <string name="welcome">Hello Welcome to the Music Central App\nThis app provides an bounded service which allows it to expose an API for clients to use.\nWith this API the users will be able to control media playback and binding.</string>
 </resources>

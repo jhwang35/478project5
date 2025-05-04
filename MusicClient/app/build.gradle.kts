@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "edu.uic.cs478.musicclient"
+    namespace = "edu.cs478.musicclient"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "edu.uic.cs478.musicclient"
+        applicationId = "edu.cs478.musicclient"
         minSdk = 28
         targetSdk = 35
         versionCode = 1
@@ -28,6 +28,10 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    buildFeatures {
+        aidl = true
     }
 }
 

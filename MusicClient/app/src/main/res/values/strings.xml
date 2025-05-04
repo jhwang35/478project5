@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MusicClient</string>
+    <string name="play">Play</string>
+    <string name="Resume">Resume</string>
+    <string name="Pause">Pause</string>
+    <string name="welcome">Welcome to the Music Client App. Here is you can play one of four songs that are managed through the Music Central Application.</string>
 </resources>

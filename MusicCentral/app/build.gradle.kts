@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "edu.uic.cs478.musiccentral"
+    namespace = "edu.cs478.musiccentral"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "edu.uic.cs478.musiccentral"
+        applicationId = "edu.cs478.musiccentral"
         minSdk = 28
         targetSdk = 35
         versionCode = 1
@@ -28,6 +28,16 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    buildFeatures {
+        aidl = true
+    }
+
+    sourceSets {
+        getByName("main") {
+            aidl.srcDirs("src/main/aidl")
+        }
     }
 }
 

@@ -101,12 +101,19 @@ public class MusicService extends Service {
     }
 
     private void playClip(int clipNumber) {
+        // goes through hashmap of songs included in res/raw folder
         if (clipResources.containsKey(clipNumber)) {
             currentClipNumber = clipNumber;
             int resourceId = clipResources.get(clipNumber);
             if (mediaPlayer != null) {
                 mediaPlayer.reset();
                 try {
+                    /* AssetFileDescriptor provides info on an app's assets/raw resources
+                     * commonly used to access and play media files
+                     * @param File Description: is what the API uses to read the file's data
+                     * @param Start Offset: starting portion of where the data begins
+                     * @param Length: length of data in bytes, how much of the file should be read
+                     */
                     AssetFileDescriptor afd = getResources().openRawResourceFd(resourceId);
                     if (afd != null) {
                         mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());

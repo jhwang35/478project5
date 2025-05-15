@@ -25,7 +25,7 @@
             android:name=".MusicService"
             android:exported="true">
             <intent-filter>
-                <action android:name="edu.cs478.musiccentral.IMediaPlayBackService" />
+                <action android:name="edu.cs478.IMediaPlayBackService" />
             </intent-filter>
         </service>
     </application>

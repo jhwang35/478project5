@@ -1,5 +1,5 @@
 // IMediaPlaybackService.aidl
-package edu.cs478.musiccentral;
+package edu.cs478;
 
 
 interface IMediaPlaybackService {

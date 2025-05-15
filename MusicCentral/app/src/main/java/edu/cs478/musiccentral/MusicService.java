@@ -33,6 +33,7 @@ public class MusicService extends Service {
         put(4, R.raw.rock);
     }};
 
+    // instance of our stub(skeleton generated from aidl) as binder obj to define methods
     private final IMediaPlaybackService.Stub binder = new IMediaPlaybackService.Stub() {
         @Override
         public void playClip(int clipNumber) throws RemoteException {

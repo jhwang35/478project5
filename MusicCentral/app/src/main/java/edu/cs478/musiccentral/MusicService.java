@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.cs478.IMediaPlaybackService;
+
 /* The MusicService class is used to provide functionality for a music player.
  * It acts as a bound service allowing for other components to interact with it through the aidl file
  * aidl file declares the Service interface with methods

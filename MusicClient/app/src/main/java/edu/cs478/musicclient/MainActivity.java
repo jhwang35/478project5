@@ -1,5 +1,6 @@
 package edu.cs478.musicclient;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -7,8 +8,11 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,6 +35,21 @@ public class MainActivity extends AppCompatActivity {
     private Button bind;
     private Button unbind;
     private IMediaPlaybackService musicService;
+    private ListView songList;
+
+    String[] songs = {
+            "Country",
+            "Groovy",
+            "Lofi",
+            "Rock"
+    };
+    private void updateButtons() {
+        play.setEnabled(isBound);
+        pause.setEnabled(isBound);
+        resume.setEnabled(isBound);
+        bind.setEnabled(!isBound);
+        unbind.setEnabled(isBound);
+    }
 
 
     /* manages the connection between music central and music client
@@ -43,15 +62,18 @@ public class MainActivity extends AppCompatActivity {
         public void onServiceConnected(ComponentName name, IBinder service) {
             musicService = IMediaPlaybackService.Stub.asInterface(service);
             isBound = true;
+            updateButtons();
 
         }
         @Override
         public void onServiceDisconnected(ComponentName name) {
             musicService = null;
             isBound = false;
+            updateButtons();
         }
     };
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,10 +91,20 @@ public class MainActivity extends AppCompatActivity {
         resume = findViewById(R.id.resumeBtn);
         bind = findViewById(R.id.bindBtn);
         unbind = findViewById(R.id.unbindBtn);
+        songList = findViewById(R.id.songList);
 
         Intent intent = new Intent("edu.cs478.IMediaPlaybackService");
         intent.setPackage("edu.cs478.musiccentral");
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_list_item_1,
+                songs
+        );
+
+        songList.setAdapter(adapter);
+
 
         // set listeners for buttons to call respective functions
         play.setOnClickListener(new View.OnClickListener() {
@@ -80,13 +112,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (isBound) {
                     try {
-                        musicService.playClip(1);
+                        Log.d("MainActivity", "Calling playClip(0)");
+                        musicService.playClip(0);
                     } catch (RemoteException e) {
-                        e.printStackTrace();
-                    }
-                }
-                else{
-                    play.setEnabled(false);
+                        Log.e("MainActivity", "RemoteException in playClip", e);                    }
                 }
             }
         });
@@ -100,9 +129,6 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-                else{
-                    pause.setEnabled(false);
-                }
             }
         });
         resume.setOnClickListener(new View.OnClickListener() {
@@ -115,9 +141,6 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-                else{
-                    resume.setEnabled(false);
-                }
             }
         });
 
@@ -125,6 +148,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!isBound) {
+                    Intent intent = new Intent("edu.cs478.IMediaPlaybackService");
+                    intent.setPackage("edu.cs478.musiccentral");
                     bindService(intent, connection, Context.BIND_AUTO_CREATE);
                 }
                 else {
@@ -137,9 +162,20 @@ public class MainActivity extends AppCompatActivity {
         unbind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isBound) {
+                if (isBound) {
                     unbindService(connection);
                     unbind.setEnabled(false);
+                    updateButtons();
+                }
+            }
+        });
+
+        songList.setOnItemClickListener((parent, view, position, id) -> {
+            if (isBound && musicService != null) {
+                try {
+                    musicService.playClip(position);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
                 }
             }
         });

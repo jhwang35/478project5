@@ -17,7 +17,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import edu.cs478.musiccentral.IMediaPlaybackService;
 
 /* This is our bound service app which deals with storing and playing music
  * This exposes the api to our client allowing them to interact with it in MusicClient
